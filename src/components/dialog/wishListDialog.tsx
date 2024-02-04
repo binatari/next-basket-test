@@ -10,8 +10,13 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useAppDispatch, useAppSelector } from "@/lib/dispatchHooks";
 import Image from "next/image";
-import {  calculateTotal } from "@/lib/helpers";
-import { removeFromWishList, selectWishListItems } from "@/lib/features/wishListSlice";
+import { calculateTotal } from "@/lib/helpers";
+import {
+  decrementWishlistItemQuantity,
+  incrementWishlistItemQuantity,
+  removeFromWishList,
+  selectWishListItems,
+} from "@/lib/features/wishListSlice";
 import ProductListItem from "../list/productListItem";
 
 const Transition = React.forwardRef(function Transition(
@@ -76,7 +81,17 @@ export default function WishListDialog() {
         <Grid xs={6}> */}
         <List>
           {wishlist.products.map((product, i, arr) => (
-            <ProductListItem key={i} {...product} remove={()=>dispatch(removeFromWishList(product))}/>
+            <ProductListItem
+              key={i}
+              {...product}
+              remove={() => dispatch(removeFromWishList(product))}
+              incrementItemQuantity={() =>
+                incrementWishlistItemQuantity(product)
+              }
+              decrementItemQuantity={() =>
+                decrementWishlistItemQuantity(product)
+              }
+            />
           ))}
         </List>
       </Dialog>

@@ -1,4 +1,5 @@
-import { product } from "./api/products/types";
+import toast from "react-hot-toast";
+import { product, productWithQuantity } from "./api/products/types";
 
 export const calculateDiscount = (
   price: number,
@@ -9,10 +10,12 @@ export const calculateDiscount = (
   return price - actualDiscount;
 };
 
-export const calculateTotal = (products: product[]): string => {
+export const calculateTotal = (products: productWithQuantity[]): string => {
   const total: number = products.reduce(
-    (prev, currValue) => prev + calculateDiscount(currValue.price, currValue.discountPercentage),
+    (prev, currValue) => prev + (calculateDiscount(currValue.price, currValue.discountPercentage) * currValue.quantity),
     0
   );
   return total.toFixed(2);
 };
+
+export const notify = (message:string) => toast.success(message);

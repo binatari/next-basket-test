@@ -1,19 +1,23 @@
 "use client"
-import { product } from "@/lib/api/products/types";
+import { product, productWithQuantity } from "@/lib/api/products/types";
+import { useAppDispatch } from "@/lib/dispatchHooks";
 import { calculateDiscount } from "@/lib/helpers";
 import { Box, Button, Divider, ListItem, ListItemText, Typography } from "@mui/material";
+import { PayloadAction } from "@reduxjs/toolkit";
 import Image from "next/image";
-import React, { useState } from "react";
-interface productListItemProps extends product {
+import React from "react";
+interface productListItemProps extends productWithQuantity {
   remove: () => void;
+  decrementItemQuantity: () => PayloadAction<product>;
+  incrementItemQuantity: () => PayloadAction<product>;
 }
 const ProductListItem = (props: productListItemProps) => {
-    const [amount, setAmount] = useState<number>(1)
+    const dispatch = useAppDispatch()
     const increment = () =>  {
-      if(amount < props.stock) setAmount(amount + 1)
+      if(props.quantity < props.stock) dispatch(props.incrementItemQuantity())
     }
     const decrement = () => {
-        if(amount > 1) setAmount(amount - 1)
+        if(props.quantity > 1) dispatch(props.decrementItemQuantity())
     }
   return (
     <Box>
@@ -65,7 +69,7 @@ const ProductListItem = (props: productListItemProps) => {
            -
           </Button>
           <Typography variant="h6" >
-             {amount}
+             {props.quantity}
         </Typography>
         <Button
             disableElevation
@@ -90,6 +94,6 @@ const ProductListItem = (props: productListItemProps) => {
       <Divider />
     </Box>
   );
-};
+};  
 
 export default ProductListItem;

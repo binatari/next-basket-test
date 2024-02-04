@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useAppDispatch, useAppSelector } from "@/lib/dispatchHooks";
-import { removeFromCart, selectCartItems } from "@/lib/features/cartSlice";
+import { decrementCartItemQuantity, incrementCartItemQuantity, removeFromCart, selectCartItems } from "@/lib/features/cartSlice";
 import Image from "next/image";
 import { Box, Grid, ListItem } from "@mui/material";
 import { calculateDiscount, calculateTotal } from "@/lib/helpers";
@@ -77,12 +77,18 @@ export default function CartDialog() {
         </AppBar>
         {/* <Grid container spacing={'30px'} >
         <Grid xs={6}> */}
-        <List>
+        <List>   
           {cart.products.map((product, i, arr) => (
             <ProductListItem
               key={i}
               {...product}
               remove={() => dispatch(removeFromCart(product))}
+              incrementItemQuantity={() =>
+                incrementCartItemQuantity(product)
+              }
+              decrementItemQuantity={() =>
+                decrementCartItemQuantity(product)
+              }
             />
           ))}
         </List>

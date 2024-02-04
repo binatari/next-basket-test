@@ -11,3 +11,7 @@ export interface product {
   thumbnail: string;
   images: string[];
 }
+
+export interface productWithQuantity extends product {
+  quantity:number
+}
